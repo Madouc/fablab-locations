@@ -1,4 +1,5 @@
 <?php
+require 'scraperwiki.php';
 
 $html = scraperWiki::scrape("http://wiki.fablab.is/wiki/Portal:Labs");       
 require 'scraperwiki/simple_html_dom.php';  
