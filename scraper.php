@@ -35,7 +35,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $lat = "";
     $lng = "";
     //echo "$locationName\n";
-    $geocode_url = "http://where.yahooapis.com/v1/places.q('"
+    $geocode_url = "http://where.yahooapis.com/v1/places.q('";
     $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-"
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
     /*print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery);*/
