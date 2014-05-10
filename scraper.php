@@ -42,7 +42,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
     //$geoResult = utf8_encode($geoResult); 
     $geoJSON = json_decode($geoResult);
-    var_dump($geoJSON)
+    var_dump($geoJSON);
     //print("    responce: ".$geoResult."\n");
     if(count($geoJSON) > 0)
     {
