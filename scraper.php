@@ -27,7 +27,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //$combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
     $combinedLocationQuery = urlencode($combinedLocationQuery);
     print(">    combinedLocation: ".$combinedLocation."\n");
-    $locationName = trim(strip_tags($tds[3]]->plaintext));
+    $locationName = trim(strip_tags($tds[3]->plaintext));
     $website = $tds[4]->plaintext;
     $rating = (count($tds) >= 6)? $tds[5]->plaintext : "";
     $contact = (count($tds) >= 7)? $tds[6]->plaintext : "";
