@@ -20,33 +20,13 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $combinedLocation = $country." ". $city;
     //print("combinedLocation: ".$combinedLocation);
     //$combinedLocation = str_replace(";"," ",$combinedLocation);
-        
-    $combinedLocationQuery = str_replace('+'," ",$combinedLocation);
-    $combinedLocationQuery = str_replace('ü',"u",$combinedLocationQuery);
-    $combinedLocationQuery = str_replace('â',"a",$combinedLocationQuery);
+    $combinedLocationQuery = strip_tags($combinedLocation);
+    $combinedLocationQuery = htmlentities($combinedLocationQuery);
     
-    if(preg_match('/.*?United Kingdom.*?/i',$combinedLocationQuery)){
-        /*print("    combinedLocation: ".$combinedLocationQuery);*/
-        $combinedLocationQuery = str_replace('United Kingdom',"England",$combinedLocationQuery);
-        if (strpos($combinedLocationQuery, 'Doncaster') !== FALSE) {
-            $combinedLocationQuery = "Doncaster";
-        }
-        if (strpos($combinedLocationQuery, 'Scotland') !== FALSE) {
-            $combinedLocationQuery = str_replace('Scotland',"",$combinedLocationQuery);
-            $combinedLocationQuery = str_replace('England',"Scotland",$combinedLocationQuery);
-        }
-    }
-
-    if(preg_match('/United States/i',$combinedLocationQuery)){
-        /*print("city: ".$city."\n");
-        $combinedLocationQuery = preg_replace('/.*?(United States).*?,(.*)/i',"$2",$combinedLocationQuery);
-        print("  combinedLocationQuery: ".$combinedLocationQuery."\n");*/
-        $combinedLocationQuery = preg_replace('/.*?,(.*)/i',"$1",$city);
-    }
-    $combinedLocationQuery = preg_replace('/^ | $|  |\r|\n/i',"",$combinedLocationQuery);
-    $combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
-    $combinedLocationQuery = urlencode($combinedLocationQuery);
-    /*print(">    combinedLocation: ".$combinedLocation);*/
+    //$combinedLocationQuery = preg_replace('/^ | $|  |\r|\n/i',"",$combinedLocationQuery);
+    //$combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
+    //$combinedLocationQuery = urlencode($combinedLocationQuery);
+    print(">    combinedLocation: ".$combinedLocation);
     $locationName = $tds[2]->plaintext;
     $website = $tds[3]->plaintext;
     $rating = (count($tds) >= 5)? $tds[4]->plaintext : "";
@@ -55,52 +35,26 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $lat = "";
     $lng = "";
     //echo "$locationName\n";
-    switch($locationName)
+    $geocode_url = "http://where.yahooapis.com/v1/places.q('"
+    $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-"
+    //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
+    /*print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery);*/
+    $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
+    $geoJSON = json_decode($geoResult);
+    print("\n    geocode_url: ".$geoJSON);
+    if(count($geoJSON) > 0)
     {
-        case " ProtoSpace ":
-            $lat = 52.103105;
-            $lng = 5.083709;
-            print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
-        break;
-        case " FabLabTruck (mobile) ":
-            $lat = 52.390561;
-            $lng = 4.938251;
-            print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
-            break;
-        case " Technistub ":
-            $lat = 47.7200873062889;
-            $lng = 7.31648040776553;
-            print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
-        break;
-        case " DAD-Workshop ":
-        case " Woźna 9c/5 ":
-            $lat = 52.408005;
-            $lng = 16.936514;
-            print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
-        break;
-        default:
-            $geocode_url = "http://where.yahooapis.com/v1/places.q('"
-            $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-"
-            //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
-            /*print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery);*/
-            $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
-            $geoJSON = json_decode($geoResult);
-            print("\n    geocode_url: ".$geoJSON);
-            if(count($geoJSON) > 0)
-            {
-                $place = $geoJSON[0];
-                /*print("\nplace: \n");
-                  print_r($place);*/
-                $lat = $place->lat;
-                $lng = $place->lon;
-                /*print($i." located ".$locationName." (".$lat." x ".$lng.")\n");*/
-            }
-            else
-            {
-                echo "Can't locate: $locationName ($combinedLocation) ($combinedLocationQuery)\n";
-                $notLocated[] = "$locationName ($combinedLocation) ($combinedLocationQuery)";
-            }
-        break;
+        $place = $geoJSON[0];
+        /*print("\nplace: \n");
+          print_r($place);*/
+        $lat = $place->lat;
+        $lng = $place->lon;
+        /*print($i." located ".$locationName." (".$lat." x ".$lng.")\n");*/
+    }
+    else
+    {
+        echo "Can't locate: $locationName ($combinedLocation) ($combinedLocationQuery)\n";
+        $notLocated[] = "$locationName ($combinedLocation) ($combinedLocationQuery)";
     }
 
     $fablab = array(
