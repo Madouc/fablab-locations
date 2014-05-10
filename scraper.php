@@ -21,11 +21,11 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //print("combinedLocation: ".$combinedLocation);
     //$combinedLocation = str_replace(";"," ",$combinedLocation);
     $combinedLocationQuery = strip_tags($combinedLocation);
-    $combinedLocationQuery = htmlentities($combinedLocationQuery);
+    $combinedLocationQuery = htmlentities($combinedLocationQuery, ENT_QUOTES);
     
     //$combinedLocationQuery = preg_replace('/^ | $|  |\r|\n/i',"",$combinedLocationQuery);
     //$combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
-    //$combinedLocationQuery = urlencode($combinedLocationQuery);
+    $combinedLocationQuery = urlencode($combinedLocationQuery);
     print(">    combinedLocation: ".$combinedLocation);
     $locationName = $tds[2]->plaintext;
     $website = $tds[3]->plaintext;
