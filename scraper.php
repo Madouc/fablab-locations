@@ -38,7 +38,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geocode_url = "http://where.yahooapis.com/v1/places.q('";
     $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-";
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
-    /*print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery);*/
+    print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery);
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
     $geoJSON = json_decode($geoResult);
     print("\n    geocode_url: ".$geoJSON);
@@ -72,7 +72,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     sleep((1000+rand(0,5000))/1000);
 
     $i++;
-    //if($i > 3) break;
+    if($i > 3) break;
 }
 print("Can't locate:\n");
 $notLocatedString = implode("\n",$notLocated);
