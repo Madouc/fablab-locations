@@ -40,9 +40,9 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
     print("    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
-    var_dump(json_decode($json));
+    var_dump(json_decode($geoResult));
     $geoJSON = json_decode($geoResult);
-    print("    responce: ".$geoResult."\n");
+    //print("    responce: ".$geoResult."\n");
     if(count($geoJSON) > 0)
     {
         $place = $geoJSON[0];
