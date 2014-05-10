@@ -15,9 +15,9 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $tds = $data->find("td");
     if(count($tds) == 0) continue;
     
-    $country = $tds[1]->plaintext;
-    $city = $tds[2]->plaintext;
-    $combinedLocation = $country." ". $city;
+    $country = trim($tds[1]->plaintext);
+    $city = trim($tds[2]->plaintext);
+    $combinedLocation = $country.", ". $city;
     //print("combinedLocation: ".$combinedLocation);
     //$combinedLocation = str_replace(";"," ",$combinedLocation);
     $combinedLocationQuery = strip_tags($combinedLocation);
