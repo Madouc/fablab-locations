@@ -26,11 +26,11 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //$combinedLocationQuery = preg_replace('/^ | $|  |\r|\n/i',"",$combinedLocationQuery);
     //$combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
     $combinedLocationQuery = urlencode($combinedLocationQuery);
-    print(">    combinedLocation: ".$combinedLocation);
-    $locationName = $tds[2]->plaintext;
-    $website = $tds[3]->plaintext;
-    $rating = (count($tds) >= 5)? $tds[4]->plaintext : "";
-    $contact = (count($tds) >= 6)? $tds[5]->plaintext : "";
+    print(">    combinedLocation: ".$combinedLocation."\n");
+    $locationName = trim(strip_tags($tds[3]]->plaintext));
+    $website = $tds[4]->plaintext;
+    $rating = (count($tds) >= 6)? $tds[5]->plaintext : "";
+    $contact = (count($tds) >= 7)? $tds[6]->plaintext : "";
     
     $lat = "";
     $lng = "";
@@ -38,10 +38,11 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geocode_url = "http://where.yahooapis.com/v1/places.q('";
     $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-";
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
-    print("\n    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id);
+    print("    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
+    var_dump(json_decode($json));
     $geoJSON = json_decode($geoResult);
-    print("\n    responce: ".$geoResult);
+    print("    responce: ".$geoResult."\n");
     if(count($geoJSON) > 0)
     {
         $place = $geoJSON[0];
