@@ -42,8 +42,9 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
     //$geoResult = utf8_encode($geoResult); 
     $geoJSON = json_decode($geoResult);
-    var_dump($geoJSON);
-    //print("    responce: ".$geoResult."\n");
+    print $geoJSON->{'places'}->{'count'};
+    //var_dump($geoJSON, true);
+    print("    responce: ".$geoJSON."\n");
     if(count($geoJSON) > 0)
     {
         $place = $geoJSON[0];
