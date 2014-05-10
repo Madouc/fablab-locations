@@ -36,12 +36,13 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $lng = "";
     //echo "$locationName\n";
     $geocode_url = "http://where.yahooapis.com/v1/places.q('";
-    $app_id = "')?appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-";
+    $app_id = "')?format=JSON&appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-";
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
     print("    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
-    var_dump(json_decode($geoResult));
+    //$geoResult = utf8_encode($geoResult); 
     $geoJSON = json_decode($geoResult);
+    var_dump($geoJSON)
     //print("    responce: ".$geoResult."\n");
     if(count($geoJSON) > 0)
     {
