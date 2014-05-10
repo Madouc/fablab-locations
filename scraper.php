@@ -44,14 +44,15 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geoJSON = json_decode($geoResult);
     print $geoJSON->{'places'}->{'count'};
     //var_dump($geoJSON, true);
-    print("    responce: ".$geoJSON."\n");
-    if(count($geoJSON) > 0)
+    //print("    responce: ".$geoJSON."\n");
+    if($geoJSON->{'places'}->{'count'} > 0)
     {
-        $place = $geoJSON[0];
+        $plObj = $geoJSON->{'places'}->{'place'}
+        $place = $plObj->{'name'};
         /*print("\nplace: \n");
           print_r($place);*/
-        $lat = $place->lat;
-        $lng = $place->lon;
+        $lat = plObj->centroid->lat;
+        $lng = plObj->centroid->lon;
         /*print($i." located ".$locationName." (".$lat." x ".$lng.")\n");*/
     }
     else
