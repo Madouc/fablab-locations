@@ -87,7 +87,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
           print_r($place);*/
         $lat = $plObj->centroid->latitude;
         $lng = $plObj->centroid->longitude;
-        print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
+        print($i." located ".$name." (".$lat." x ".$lng.")\n");
     }
     else
     {
