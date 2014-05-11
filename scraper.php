@@ -35,7 +35,7 @@ $i = 0;
 $notLocated = array();
 foreach($dom->find("#content .wikitable tr") as $data)
 {
-    //if($i++ > 3) break;
+    if($i++ > 20) break;
 
     $tds = $data->find("td");
     if(count($tds) == 0) continue;
@@ -43,6 +43,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $country = trim($tds[1]->plaintext);
     $city = trim($tds[2]->plaintext);
     $combinedLocation = $country.", ". $city;
+    $name = trim(strip_tags($tds[3]->plaintext));
 
     //figure out if this location exists in the db already, and if so. remove from the memoryDB
     $stmt = $file_db->prepare("select * from data where name LIKE :name");
@@ -62,7 +63,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $combinedLocationQuery = htmlentities($combinedLocationQuery, ENT_QUOTES);
     
     $combinedLocationQuery = urlencode($combinedLocationQuery);
-    $locationName = trim(strip_tags($tds[3]->plaintext));
+
     $website = $tds[4]->plaintext;
     $rating = (count($tds) >= 6)? $tds[5]->plaintext : "";
     $contact = (count($tds) >= 7)? $tds[6]->plaintext : "";
@@ -97,7 +98,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     }
 
     $fablab = array(
-        'name' => $locationName,        
+        'name' => $name,        
         'location' => $combinedLocation,
         'website' => $website,
         'lat' => $lat,
@@ -117,10 +118,17 @@ foreach($dom->find("#content .wikitable tr") as $data)
 
 $stmt = $mem_db->prepare("select * from data");
 $stmt->execute();
-echo "stored locations no longer in table: ".count($stmt->fetchall())."\n";
+$unmatched = $stmt->fetchall();
+echo "stored locations no longer in table: ".count($unmatched)."\n";
+if (count($unmatched)>0) {
+    print("\t");
+    $unmatchedString = implode("\n\t",$unmatched);
+    print($unmatchedString);
+}
 echo "unable to locate" .count($notLocated)." locations\n";
 if (count($notLocated)>0) {
-    $notLocatedString = implode("\n",$notLocated);
+    print("\t");
+    $notLocatedString = implode("\n\t",$notLocated);
     print($notLocatedString);
 }
 
