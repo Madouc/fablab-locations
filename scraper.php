@@ -45,18 +45,18 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $combinedLocation = $country.", ". $city;
 
     //figure out if this location exists in the db already, and if so. remove from the memoryDB
-    $stmt = $file_db->prepare("select * from data where location LIKE :search");
-    $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
+    $stmt = $file_db->prepare("select * from data where name LIKE :name");
+    $stmt->bindParam(':name', $name, PDO::PARAM_STR);
     echo ($stmt->execute());
     
     if (count($stmt->fetchall())>0) {
         echo ("location: ".$combinedLocation." already in database\n");
-        $stmt = $mem_db->prepare("delete from data where location LIKE :search");
-        $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
+        $stmt = $mem_db->prepare("delete from data where name LIKE :name");
+        $stmt->bindParam(':name', $combinedLocation, PDO::PARAM_STR);
         $stmt->execute();
         continue;
     }
-    echo ("location: ".$combinedLocation." not yet in database, lets add\n");
+    echo ("location: ".$name." not yet in database, lets add\n");
     
     $combinedLocationQuery = strip_tags($combinedLocation);
     $combinedLocationQuery = htmlentities($combinedLocationQuery, ENT_QUOTES);
@@ -111,20 +111,18 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $stmt->execute($fablab);
     
 
-    //scraperwiki::save(array('name','location'), $fablab);
-    
-    //sleep((1000+rand(0,5000))/1000);
+    sleep((1000+rand(0,3000))/2000);
 
 }
-
-//print("Can't locate:\n");
-//$notLocatedString = implode("\n",$notLocated);
-//print($notLocatedString);
 
 $stmt = $mem_db->prepare("select * from data");
 $stmt->execute();
 echo "stored locations no longer in table: ".count($stmt->fetchall())."\n";
 echo "unable to locate" .count($notLocated)." locations\n";
+if (count($notLocated)>0) {
+    $notLocatedString = implode("\n",$notLocated);
+    print($notLocatedString);
+}
 
 
 $file_db=null;
