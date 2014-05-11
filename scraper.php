@@ -93,7 +93,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
         echo "Can't locate: $locationName ($combinedLocation) ($combinedLocationQuery)\n";
         print("geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
         $notLocated[] = "$locationName ($combinedLocation) ($combinedLocationQuery)";
-        continue();
+        continue;
     }
 
     $fablab = array(
