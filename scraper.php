@@ -26,7 +26,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //$combinedLocationQuery = preg_replace('/^ | $|  |\r|\n/i',"",$combinedLocationQuery);
     //$combinedLocationQuery = preg_replace('/[,;]/i',"",$combinedLocationQuery);    
     $combinedLocationQuery = urlencode($combinedLocationQuery);
-    print(">    combinedLocation: ".$combinedLocation."\n");
+    //print(">    combinedLocation: ".$combinedLocation."\n");
     $locationName = trim(strip_tags($tds[3]->plaintext));
     $website = $tds[4]->plaintext;
     $rating = (count($tds) >= 6)? $tds[5]->plaintext : "";
@@ -42,18 +42,18 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
     //$geoResult = utf8_encode($geoResult); 
     $geoJSON = json_decode($geoResult);
-    print $geoJSON->{'places'}->{'count'};
+    ///print $geoJSON->{'places'}->{'count'};
     //var_dump($geoJSON, true);
     //print("    responce: ".$geoJSON."\n");
     if($geoJSON->{'places'}->{'count'} > 0)
     {
-        $plObj = $geoJSON->{'places'}->{'place'};
-        $place = $geoJSON->{'places'}->{'place'}->{'name'};
+        $plObj = $geoJSON->{'places'}->{'place'}[0];
+        $place = $plObj->{'name'};
         /*print("\nplace: \n");
           print_r($place);*/
-        $lat = $geoJSON->places->place->centroid->lat;
-        $lng = $geoJSON->places->place->centroid->lon;
-        /*print($i." located ".$locationName." (".$lat." x ".$lng.")\n");*/
+        $lat = $plObj->centroid->latitude;
+        $lng = $geoJSON->places->place[0]->centroid->longitude;
+        print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
     }
     else
     {
