@@ -1,6 +1,24 @@
 <?php
-require 'scraperwiki.php';
+try {
+    $file_db = new PDO('sqlite:data.sqlite');
+    $file_db->setAttribute(PDO::ATTR_ERRMODE, 
+                           PDO::ERRMODE_EXCEPTION);
+    $file_db->exec("CREATE TABLE IF NOT EXISTS data (
+                    name TEXT, 
+                    location TEXT, 
+                    website TEXT,
+                    lat REAL, 
+                    lon REAL,
+                    rating TEXT,
+                    contact TEXT)");
+}
+catch(PDOException $e) {
+    // Print PDOException message
+    die ($e->getMessage());
+}
 
+
+require 'scraperwiki.php';
 $html = scraperWiki::scrape("http://wiki.fablab.is/wiki/Portal:Labs");       
 require 'scraperwiki/simple_html_dom.php';  
 $dom = new simple_html_dom();
@@ -38,7 +56,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $geocode_url = "http://where.yahooapis.com/v1/places.q('";
     $app_id = "')?format=JSON&appid=DX4mM4PV34ESO96yg70UGL5nu87SZ.gLXnubndwBjFvVp6_6LlnRfyd7Co_4s_W1q3se1LE-";
     //$geocode_url = 'http://open.mapquestapi.com/nominatim/v1/search?format=json&q=';
-    print("    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
+    //print("    geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
     $geoResult = file_get_contents($geocode_url.$combinedLocationQuery.$app_id);
     //$geoResult = utf8_encode($geoResult); 
     $geoJSON = json_decode($geoResult);
@@ -58,6 +76,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     else
     {
         echo "Can't locate: $locationName ($combinedLocation) ($combinedLocationQuery)\n";
+        print("geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
         $notLocated[] = "$locationName ($combinedLocation) ($combinedLocationQuery)";
     }
 
@@ -71,14 +90,14 @@ foreach($dom->find("#content .wikitable tr") as $data)
         'contact' => $contact
     );
 
-    scraperwiki::save(array('name','location'), $fablab);
+    //scraperwiki::save(array('name','location'), $fablab);
     
     //sleep((1000+rand(0,5000))/1000);
 
     $i++;
     if($i > 3) break;
 }
-print("Can't locate:\n");
-$notLocatedString = implode("\n",$notLocated);
-print($notLocatedString);
+//print("Can't locate:\n");
+//$notLocatedString = implode("\n",$notLocated);
+//print($notLocatedString);
 ?>
