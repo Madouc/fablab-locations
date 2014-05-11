@@ -53,6 +53,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
         echo ("location: ".$combinedLocation." already in database\n");
         $stmt = $mem_db->prepare("delete from data where location LIKE :search");
         $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
+        $stmt->execute();
         continue;
     }
     echo ("location: ".$combinedLocation." not yet in database, lets add\n");
@@ -114,9 +115,16 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //sleep((1000+rand(0,5000))/1000);
 
 }
+
 //print("Can't locate:\n");
 //$notLocatedString = implode("\n",$notLocated);
 //print($notLocatedString);
+
+$stmt = $mem_db->prepare("select * from data");
+$stmt->execute();
+echo "stored locations no longer in table: ".count($stmt->fetchall())."\n";
+
+
 $file_db=null;
 $mem_db=null;
 
