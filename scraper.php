@@ -53,7 +53,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     if (count($stmt->fetchall())>0) {
         echo ("location: ".$combinedLocation." already in database\n");
         $stmt = $mem_db->prepare("delete from data where name LIKE :name");
-        $stmt->bindParam(':name', $combinedLocation, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->execute();
         continue;
     }
@@ -121,7 +121,7 @@ $stmt->execute();
 $unmatched = $stmt->fetchall();
 echo "stored locations no longer in table: ".count($unmatched)."\n";
 foreach ($unmatched as $d) {
-    print("\t".$d->name."\n");
+    print("\t".$d[0]."\n");
 }
 echo "unable to locate: " .count($notLocated)." locations\n";
 if (count($notLocated)>0) {
