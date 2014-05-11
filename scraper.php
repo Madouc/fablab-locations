@@ -48,11 +48,11 @@ foreach($dom->find("#content .wikitable tr") as $data)
     if($geoJSON->{'places'}->{'count'} > 0)
     {
         $plObj = $geoJSON->{'places'}->{'place'}[0];
-        $place = $plObj->{'name'};
+        $place = $plObj->name;
         /*print("\nplace: \n");
           print_r($place);*/
         $lat = $plObj->centroid->latitude;
-        $lng = $geoJSON->places->place[0]->centroid->longitude;
+        $lng = $plObj->centroid->longitude;
         print($i." located ".$locationName." (".$lat." x ".$lng.")\n");
     }
     else
@@ -73,7 +73,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
 
     scraperwiki::save(array('name','location'), $fablab);
     
-    sleep((1000+rand(0,5000))/1000);
+    //sleep((1000+rand(0,5000))/1000);
 
     $i++;
     if($i > 3) break;
