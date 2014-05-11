@@ -35,6 +35,8 @@ $i = 0;
 $notLocated = array();
 foreach($dom->find("#content .wikitable tr") as $data)
 {
+    if($i++ > 3) break;
+
     $tds = $data->find("td");
     if(count($tds) == 0) continue;
 
@@ -45,6 +47,8 @@ foreach($dom->find("#content .wikitable tr") as $data)
     //figure out if this location exists in the db already, and if so. remove from the memoryDB
     $stmt = $file_db->prepare("select * from data where location LIKE :search");
     $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
+    echo ($stmt->execute());
+    
     if ($stmt->execute()>0) {
         echo ("location: ".$combinedLocation." already in database\n");
         $stmt = $mem_db->prepare("delete from data where location LIKE :search");
@@ -109,8 +113,6 @@ foreach($dom->find("#content .wikitable tr") as $data)
     
     //sleep((1000+rand(0,5000))/1000);
 
-    $i++;
-    if($i > 3) break;
 }
 //print("Can't locate:\n");
 //$notLocatedString = implode("\n",$notLocated);
