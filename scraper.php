@@ -49,7 +49,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
     echo ($stmt->execute());
     
-    if ($stmt->execute()>0) {
+    if (count($stmt->fetchall())>0) {
         echo ("location: ".$combinedLocation." already in database\n");
         $stmt = $mem_db->prepare("delete from data where location LIKE :search");
         $stmt->bindParam(':search', $combinedLocation, PDO::PARAM_STR);
