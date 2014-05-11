@@ -122,6 +122,10 @@ $unmatched = $stmt->fetchall();
 echo "stored locations no longer in table: ".count($unmatched)."\n";
 foreach ($unmatched as $d) {
     print("\t".$d[0]."\n");
+    $stmt = $file_db->prepare("delete from data where name LIKE :name");
+    $stmt->bindParam(':name', $d[0], PDO::PARAM_STR);
+    $stmt->execute();
+
 }
 echo "unable to locate: " .count($notLocated)." locations\n";
 if (count($notLocated)>0) {
