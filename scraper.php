@@ -106,7 +106,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $insert = "INSERT INTO data (name, location, website, lat, lon, rating, contact) 
                 VALUES (:name, :location, :website, :lat, :lon, :rating, :contact)";
     $stmt = $file_db->prepare($insert);
-    $sth->execute($fablab);
+    $stmt->execute($fablab);
     
 
     //scraperwiki::save(array('name','location'), $fablab);
