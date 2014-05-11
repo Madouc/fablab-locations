@@ -35,7 +35,7 @@ $i = 0;
 $notLocated = array();
 foreach($dom->find("#content .wikitable tr") as $data)
 {
-    //if($i++ > 20) break;
+    if($i++ > 19) break;
 
     $tds = $data->find("td");
     if(count($tds) == 0) continue;
