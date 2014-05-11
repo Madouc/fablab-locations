@@ -35,7 +35,7 @@ $i = 0;
 $notLocated = array();
 foreach($dom->find("#content .wikitable tr") as $data)
 {
-    if($i++ > 3) break;
+    //if($i++ > 3) break;
 
     $tds = $data->find("td");
     if(count($tds) == 0) continue;
@@ -93,6 +93,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
         echo "Can't locate: $locationName ($combinedLocation) ($combinedLocationQuery)\n";
         print("geocode_url: ".$geocode_url.$combinedLocationQuery.$app_id."\n");
         $notLocated[] = "$locationName ($combinedLocation) ($combinedLocationQuery)";
+        continue();
     }
 
     $fablab = array(
@@ -123,6 +124,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
 $stmt = $mem_db->prepare("select * from data");
 $stmt->execute();
 echo "stored locations no longer in table: ".count($stmt->fetchall())."\n";
+echo "unable to locate" .count($notLocated)." locations\n";
 
 
 $file_db=null;
