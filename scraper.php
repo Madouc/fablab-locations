@@ -19,6 +19,7 @@ try {
     $mem_db->exec('ATTACH "data.sqlite" as filedb');
     $mem_db->exec('CREATE TABLE data AS SELECT * FROM filedb.data');
     $mem_db->exec('DETACH filedb');
+}
 catch(PDOException $e) {
     // Print PDOException message
     die ($e->getMessage());
