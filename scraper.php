@@ -120,7 +120,7 @@ $stmt = $mem_db->prepare("select * from data");
 $stmt->execute();
 $unmatched = $stmt->fetchall();
 echo "stored locations no longer in table: ".count($unmatched)."\n";
-foreach ($unmatched as d$) {
+foreach ($unmatched as $d) {
     print("\t".$d->name."\n");
 }
 echo "unable to locate: " .count($notLocated)." locations\n";
