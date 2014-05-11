@@ -99,7 +99,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
         'location' => $combinedLocation,
         'website' => $website,
         'lat' => $lat,
-        'lng' => $lng,
+        'lon' => $lng,
         'rating' => $rating,
         'contact' => $contact
     );
