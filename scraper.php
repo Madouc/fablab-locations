@@ -43,7 +43,9 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $country = trim($tds[1]->plaintext);
     $city = trim($tds[2]->plaintext);
     $combinedLocation = $country.", ". $city;
+    echo " before ".$combinedLocation.
     $name = trim(strip_tags($tds[3]->plaintext));
+    echo " before ".$combinedLocation. " after "
 
     //figure out if this location exists in the db already, and if so. remove from the memoryDB
     $stmt = $file_db->prepare("select * from data where name LIKE :name");
@@ -51,18 +53,19 @@ foreach($dom->find("#content .wikitable tr") as $data)
     echo ($stmt->execute());
     
     if (count($stmt->fetchall())>0) {
-        echo ("location: ".$combinedLocation." already in database\n");
+        echo (" location: ".$combinedLocation." already in database\n");
         $stmt = $mem_db->prepare("delete from data where name LIKE :name");
         $stmt->bindParam(':name', $name, PDO::PARAM_STR);
         $stmt->execute();
         continue;
     }
-    echo ("location: ".$name." not yet in database, lets add\n");
+    echo (" location: ".$name." not yet in database, lets add\n");
     
     $combinedLocationQuery = strip_tags($combinedLocation);
     $combinedLocationQuery = htmlentities($combinedLocationQuery, ENT_QUOTES);
     
-    $combinedLocationQuery = urlencode($combinedLocationQuery);
+    //$combinedLocationQuery = urlencode($combinedLocationQuery);
+    $combinedLocationQuery = urlencode($combinedLocation);
 
     $website = $tds[4]->plaintext;
     $rating = (count($tds) >= 6)? $tds[5]->plaintext : "";
