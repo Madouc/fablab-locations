@@ -45,7 +45,7 @@ foreach($dom->find("#content .wikitable tr") as $data)
     $combinedLocation = $country.", ". $city;
     echo " before ".$combinedLocation.
     $name = trim(strip_tags($tds[3]->plaintext));
-    echo " before ".$combinedLocation. " after "
+    //echo " before ".$combinedLocation. " after "
 
     //figure out if this location exists in the db already, and if so. remove from the memoryDB
     $stmt = $file_db->prepare("select * from data where name LIKE :name");
