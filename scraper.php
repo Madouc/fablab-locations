@@ -25,11 +25,19 @@ catch(PDOException $e) {
     die ($e->getMessage());
 }
 
-require 'scraperwiki.php';
-require 'scraperwiki/simple_html_dom.php';
-$html = scraperWiki::scrape("http://wiki.fablab.is/wiki/Portal:Labs");       
-$dom = new simple_html_dom();
-$dom->load($html);
+//require 'scraperwiki.php';
+//require 'scraperwiki/simple_html_dom.php';
+require_once 'vendor/openaustralia/scraperwiki/scraperwiki.php';
+
+use Torann\DomParser\HtmlDom;
+$browser = new PGBrowser();
+$page    = $browser->get("http://wiki.fablab.is/wiki/Portal:Labs");
+$dom = HtmlDom::fromString($page->html);
+
+
+//$html = scraperWiki::scrape("http://wiki.fablab.is/wiki/Portal:Labs");       
+//$dom = new simple_html_dom();
+//$dom->load($html);
 $i = 0;
 $notLocated = array();
 foreach($dom->find("#content .wikitable tr") as $data)
