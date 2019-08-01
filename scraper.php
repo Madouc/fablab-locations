@@ -1,4 +1,4 @@
-<?php
+<?
 try {
     // open or create data.sqlite database
     $file_db = new PDO('sqlite:data.sqlite');
@@ -25,10 +25,9 @@ catch(PDOException $e) {
     die ($e->getMessage());
 }
 
-
 require 'scraperwiki.php';
+require 'scraperwiki/simple_html_dom.php';
 $html = scraperWiki::scrape("http://wiki.fablab.is/wiki/Portal:Labs");       
-require 'scraperwiki/simple_html_dom.php';  
 $dom = new simple_html_dom();
 $dom->load($html);
 $i = 0;
