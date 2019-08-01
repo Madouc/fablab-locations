@@ -27,9 +27,11 @@ catch(PDOException $e) {
 
 //require 'scraperwiki.php';
 //require 'scraperwiki/simple_html_dom.php';
+require_once 'vendor/autoload.php';
 require_once 'vendor/openaustralia/scraperwiki/scraperwiki.php';
-
+use PGuardiario\PGBrowser;
 use Torann\DomParser\HtmlDom;
+
 $browser = new PGBrowser();
 $page    = $browser->get("http://wiki.fablab.is/wiki/Portal:Labs");
 $dom = HtmlDom::fromString($page->html);
